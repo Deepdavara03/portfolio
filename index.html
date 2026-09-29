@@ -1452,13 +1452,20 @@
             </div>
             <div class="reveal" style="transition-delay:400ms">
                 <div class="hero-ctas">
-                    <a href="AI_ML_Deep_Davara.pdf" download class="btn-primary"><svg viewBox="0 0 24 24" width="15"
-                            height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                            stroke-linejoin="round" style="margin-right:7px">
+                    <a href="AI_ML_Deep_Davara.pdf" class="btn-primary" onclick="downloadResume(event)">
+
+                        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:7px">
+
                             <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
                             <polyline points="7 10 12 15 17 10" />
                             <line x1="12" y1="15" x2="12" y2="3" />
-                        </svg>Download Resume</a>
+
+                        </svg>
+
+                        Download Resume
+                    </a>
+
                     <button class="btn-ghost" onclick="gotoSection('projects')">View Projects<svg viewBox="0 0 24 24"
                             width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"
                             stroke-linecap="round" stroke-linejoin="round" style="margin-left:6px">
@@ -1506,15 +1513,16 @@
             <div class="about-grid">
                 <div class="reveal from-left" style="transition-delay:120ms">
                     <div class="about-bio">
-                        <p>I'm <strong>Deep Davara</strong>, an <strong>AI/ML Engineer</strong> from Ahmedabad, India.
+                        <p>I'm <strong>Deep Davara</strong>, an <strong>AI Engineer</strong> from Ahmedabad, India.
                             My expertise includes Python, Scikit-learn, TensorFlow, PyTorch, NLP, FastAPI, and AI
                             workflow automation.</p>
                         <p>I recently completed an AI Engineer internship at <strong>Movya Infotech</strong>, where I
                             trained machine learning models, applied NLP techniques such as TF-IDF, text classification,
                             and sentiment analysis, built RESTful APIs with FastAPI to deploy models, and created
                             AI-powered automation workflows using n8n.</p>
-                        <p>I've built projects in computer vision, content automation, and AI-driven media generation,
-                            and hold a <strong>BSc (CA&amp;IT)</strong>. I'm a quick learner who enjoys turning ideas
+                        <p>I've built projects in computer vision, content automation, and AI-driven media generation.
+                            Currently pursuing <strong>MSc (CA&amp;IT)</strong>. I'm a quick learner who enjoys turning
+                            ideas
                             into working AI products.</p>
                         <div class="bio-tags"><span class="tag">Ahmedabad, India</span><span class="tag">Flexible with
                                 Work</span><span class="tag">Quick Learner</span><span
@@ -1892,6 +1900,35 @@
         function toggleMobile() { mobOpen = !mobOpen; document.getElementById("mobile-menu").classList.toggle("open", mobOpen); document.getElementById("mob-toggle").innerHTML = ico(mobOpen ? "x" : "menu", 15) }
         function closeMobile() { mobOpen = false; document.getElementById("mobile-menu").classList.remove("open"); document.getElementById("mob-toggle").innerHTML = ico("menu", 15) }
         function gotoSection(id) { document.getElementById(id)?.scrollIntoView({ behavior: "smooth" }) }
+
+        async function downloadResume(event) {
+            event.preventDefault();
+
+            const resumeUrl = "./AI_ML_Deep_Davara.pdf";
+
+            try {
+                const response = await fetch(resumeUrl, { cache: "no-store" });
+
+                if (!response.ok) {
+                    throw new Error("Resume file not found: " + response.status);
+                }
+
+                const blob = await response.blob();
+                const blobUrl = URL.createObjectURL(blob);
+
+                const downloadLink = document.createElement("a");
+                downloadLink.href = blobUrl;
+                downloadLink.download = "Deep_Davara_Resume.pdf";
+                document.body.appendChild(downloadLink);
+                downloadLink.click();
+                downloadLink.remove();
+
+                setTimeout(() => URL.revokeObjectURL(blobUrl), 1000);
+            } catch (error) {
+                console.error("Resume download failed:", error);
+                alert("Unable to download the resume. Please make sure AI_ML_Deep_Davara.pdf is in the same folder as index.html.");
+            }
+        }
 
         const ROLES = ["AI Engineer", "ML Engineer", "NLP Engineer", "Automation Developer"]; let ri = 0; const roleEl = document.getElementById("role-word");
         setInterval(() => { roleEl.classList.add("hide"); setTimeout(() => { ri = (ri + 1) % ROLES.length; roleEl.textContent = ROLES[ri]; roleEl.classList.remove("hide") }, 400) }, 2800);
